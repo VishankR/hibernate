@@ -1,0 +1,26 @@
+1.Whats the advantage of load() vs get() in Hibernate?
+	load()																								get()
+	Only use load() method if you are sure that the object exists.										If you are not sure that the object exist, then use one of get() methods.
+	load() method will throw an exception if the unique id is not found in the database.				get() method will return null if the unique id is not found in the database.
+	load() just returns a proxy by default and database won't be hit until the proxy is first invoked.	get() will hit the database immediately.
+	
+	Proxy means, hibernate will prepare some fake object with given identifier value in the memory without hitting a database.
+	enter image description here
+	For Example:
+	If we call session.load(Student.class,new Integer(107));
+	hibernate will create one fake Student object [row] in the memory with id 107, but remaining properties of Student class will not even be initialized.
+	You may ask why this option is useful—after all, you retrieve an object to access it. It’s common to obtain a persistent instance to assign it as a reference to another instance. For example, imagine that you need the item only for a single purpose: to set an association with a Comment: aComment.setForAuction(item). If this is all you plan to do with the item, a proxy will do fine; there is no need to hit the database. In other words, when the Comment is saved, you need the foreign key value of an item inserted into the COMMENT table. 
+	The proxy of an Item provides just that: an identifier value wrapped in a placeholder that looks like the real thing.
+	
+2.Persist() vs Save() - 
+	Save()
+	Returns generated Id after saving. Its return type is Serializable;
+	Saves the changes to the database outside of the transaction;
+	Assigns the generated id to the entity you are persisting;
+	session.save() for a detached object will create a new row in the table.
+	
+	Persist()
+	Does not return generated Id after saving. Its return type is void;
+	Does not save the changes to the database outside of the transaction;
+	Assigns the generated Id to the entity you are persisting;
+	session.persist() for a detached object will throw a PersistentObjectException, as it is not allowed.

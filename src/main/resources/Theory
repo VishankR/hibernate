@@ -1,0 +1,155 @@
+Refresher on Hibernate Types
+	 Hibernate supports two major types
+		 Value types: String, Integer, Double, Date, etc …
+		 Entity types: Customer, Student, Account, etc …
+	 Value types do not have their own lifecycle and no identifier
+	 Entity types have their own lifecycle and unique identifier
+
+Categories of Value Types
+	Category 			Examples
+	Basic 				String, Integer, Double, Boolean, Date, etc …
+	Embedded 			Address, PhoneNumber (any custom object)
+	Collection 			Set, List, Map, etc …
+						We used this earlier with @ElementCollection
+
+Annotation for Embedded
+	Annotation 				Description
+	@Embeddable 			Used to annotate a given class as an Embedded value type.
+							For example: We'll apply this to the Address class
+	@Embedded				Used to reference an Embedded value type
+							For example: Student can use this to refer to Address
+							The use of @Embedded is optional
+
+Advanced Mappings
+	 Collections: List, Set and Map (including sorted versions)
+	 Components: @Embeddable and @Embedded
+	 Enums
+	 Inheritance: single table, table per class, joined table, mapped super class
+	
+Collections
+	 When using Hibernate, you may need to persist a collection of items
+		 Person has a collection of email addresses
+		 Course has a collection of students
+		 Student has a collection of images
+		 Company has a collection of employees
+	Java Collections
+		 List: ordered collection of items, may contain duplicates
+		 Set: collection of items that contains no duplicates
+		 Map: object that maps keys to values, no duplicate keys allowed
+		
+Annotations to Map Collections
+	Annotation 						Description
+	@ElementCollection 		-		Declares an element collection mapping.
+									The data for the collection is stored in a separate table.
+	@CollectionTable 		-		Specifies the name of table that will hold the collection.
+									Also provides the join column to refer to primary table.
+	@Column 				-		The name of the column to map in the collection table.
+
+More on @ElementCollection
+	 @ElementCollection can be used to define relationships
+	 One-to-many relationship to an @Embeddable object
+	 One-to-many relationship to a Basic object, such as
+	 Java primitives (wrappers): int, Integer,Double, etc …
+	 Date,String, etc …
+		private Set<String> images = new HashSet<String>();
+	Similar to @OneToMany except target object is not an @Entity
+
+Limitations on @ElementCollection
+	 With @ElementCollection
+		 You can't query, persist or merge target objects independently
+		of their parent object
+	 @ElementCollection does not support a cascade option
+		 Target objects are ALWAYS persisted, merged, removed
+		with their parent object
+		
+Why Inheritance?
+	 When using object-oriented design, we can
+		 Create a superclass that has common data
+		 Subclasses can inherit common data from superclass
+		 Great example of reuse
+
+Hibernate - How to Map Inheritance?
+	 Can we map all entities to a single table?
+	 Should we have a table for each entity?
+	 Can we join the tables?
+	 Do we duplicate fields in every table?
+
+Warning
+	When using ORM, mapping deep inheritance relationships
+		May increase the complexity of your application
+		May adversely affect your application’s performance
+
+Inheritance Mapping Strategies
+	 Single table
+	 Table per class
+	 Joined table
+	 Mapped superclass
+
+Annotation for Inheritance
+	Annotation 				Description
+	@Inheritance			Specify the inheritance strategy. Possible values:
+							SINGLE_TABLE, TABLE_PER_CLASS, JOINED
+							Defaults to SINGLE_TABLE.
+	@DiscriminatorColumn 	Name of the column that holds the discriminator values.
+							Defaults to DTYPE.
+	@DiscriminatorValue 	A unique value that describes a given subclass.
+							Defaults to class name.
+
+Single Table
+	 Maps all entities in inheritance tree to a single database table
+	 A discriminator column indicates the type/class of data in the row
+	 Table has columns for all fields in the inheritance tree
+	 Each row will only use a subset of the fields
+	 Unused fields are null
+	 Development Process
+		1. In superclass, specify
+			1. Inheritance strategy
+			2. Discriminator column name
+		2. In subclass, specify discriminator value
+		3. Develop main application
+
+Table per Class
+	 For the inheritance tree, all concrete classes are mapped a table per class
+	 	Remember, a concrete class is a non-abstract class
+	 Includes fields defined in subclass and fields inherited from superclass
+	 These fields are mapped to a table for the concrete class
+	 Development Process
+		1. In superclass, specify inheritance strategy: TABLE_PER_CLASS
+		2. Remove annotations for Discriminator
+		3. In User superclass, update the ID generation strategy to TABLE
+		4. Make updates to Hibernate configuration file
+		5. Develop main application
+	Update ID generation strategy
+		 Each table has an ID field
+		 When we add an entity, we need the next generated ID
+		 The next generated ID value can be maintained in a separate table
+		 Known as a “sequence table”
+Joined Tables
+	 For the inheritance tree, all classes are mapped to a table
+	 Superclass table contains fields common to all subclasses
+	 Subclass tables contain only fields specific to the subclass
+	 Inheritance is modeled with a foreign key
+	 Hibernate will join the data based on primary key and foreign key
+	 Development Process
+		1. In superclass, specify inheritance strategy: JOINED
+		2. In superclass, update the ID generation strategy to IDENTITY
+		3. Develop main application
+Mapped Superclass
+	 For the inheritance tree, subclass is mapped to a table
+	 Each table has the inherited fields and fields defined in the subclass
+	 The mapped superclass is no longer a separate table/entity (no @Entity)
+	 Only the subclasses will use @Entity
+	 Only the subclasses will have tables in the database
+	 Mapped Superclass … looks familiar …
+		 Similar to Table per Class strategy but …
+		 Mapped Superclass
+		 No table for superclass
+		 No table joins or inheritance exists in the database schema
+		 Inheritance only exists in the Java object model
+	Development Process
+		1. In superclass, annotate superclass with @MappedSuperclass
+		2. In superclass, remove the annotations:
+			1. @Entity
+			2. @Table
+			3. @Inheritance
+		3. In subclasses, use normal Hibernate annotation: @Entity
