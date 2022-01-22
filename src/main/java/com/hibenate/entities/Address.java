@@ -1,4 +1,4 @@
-package hibernate.entities;
+package com.hibenate.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

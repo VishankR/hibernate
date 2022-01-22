@@ -11,11 +11,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.Table;
-
-import hibernate.entities.Address;
-
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -85,7 +83,7 @@ public class Member {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
 	public void setImages(Set<String> images) {
 		this.images = images;
 	}
@@ -93,4 +91,5 @@ public class Member {
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
+
 }
