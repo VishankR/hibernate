@@ -64,9 +64,9 @@ public class Student /* extends Member */ {
 	 * 
 	 * @MapKeyColumn(name = "project_name") private Map<String, String> projects;
 	 */
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name="receiptList")
-	List<FeeReceipt> receiptList;
+	//@OneToMany(cascade = CascadeType.ALL)
+	//@JoinColumn(name="receiptList")
+	//List<FeeReceipt> receiptList;
 
 	public Student(/*
 					 * String firstName, String lastName, String email, Set<String> images, Address
@@ -83,11 +83,10 @@ public class Student /* extends Member */ {
 		/* this.memDetail = memDetail; */
 	}
 
-	public List<FeeReceipt> getReceiptList() {
-		return receiptList;
-	}
-
-	public void setReceiptList(List<FeeReceipt> receiptList) {
-		this.receiptList = receiptList;
-	}
+	/*
+	 * public List<FeeReceipt> getReceiptList() { return receiptList; }
+	 * 
+	 * public void setReceiptList(List<FeeReceipt> receiptList) { this.receiptList =
+	 * receiptList; }
+	 */
 }

@@ -33,19 +33,7 @@ owning Entity - The Entity in which we are writting that annotaion
 @ManyToOne - UniDirectional(without @JoinCloumn) - 1. will create both entity's table
                                                   2. will create one column(acts as foreign key) in owning entity with target entity's id column
             UniDirectional(with @JoinCloumn)    - 1. If we use @JoinColumn in (student entity) then hibernate will create a foreign key column in 
-                                                    target entity's table (FeeReceipt Table) with name mentioned in @joincolumn annotaion
-            BiDirectional(without @JoinColumn)  - 1. will create both entity's table and one extra table with name owningEntity_TargetEntity
-                                                  2. will create one column(which is used in that extra table) in target entity's table (with owning table's id column) 
-                                                     because we use @ManyToOne annotaion in target entity
-            BiDirectional(with @JoinCloumn)     - 1. If we use @JoinColumn in (student entity) then hibernate will create a column in 
-                                                     target entity's table (FeeReceipt Table) with name mentioned in @joincolumn annotaion
-                                                  2. will create one extra  column in target entity's table (with owning table's id column) 
-                                                     because we use @ManyToOne annotaion in target entity. But this foreign key will be inerted null evrytime
-            BiDirectional(with @JoinCloumn 
-                          and mappedBY)         - 1. If we use @JoinColumn in (FeeReceipt entity) target then hibernate will create a foreign key column in 
-                                                     target entity's table (FeeReceipt Table) with name mentioned in @joincolumn annotaion
-                                                  2. If we use mappedBy in a entity then the foreign key column will be created in 
-                                                     other entity's table
+                                                    owning entity's table (student Table) with name mentioned in @joincolumn annotaion
 
 
 @ManyToMany - UniDirectional(without @JoinCloumn) - 1. will create both entity's table and two extra table with name owningEntity_TargetEntity and targetEntity_owningEntity

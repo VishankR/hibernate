@@ -44,7 +44,7 @@ public class App {
 											 * "Paul","Wall","paul@luv2code.com", images, books, projects, homeAddress,
 											 * memDetail
 											 */);
-		tempStudent.setReceiptList(receiptList);
+		//tempStudent.setReceiptList(receiptList);
 		tempStudent.setMemDetail(memDetail);
 		
 		Session session = sf.openSession();
