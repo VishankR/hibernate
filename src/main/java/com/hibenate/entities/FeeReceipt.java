@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class FeeReceipt {
@@ -17,9 +16,11 @@ public class FeeReceipt {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinColumn(name = "performance_id")
-    private List<Student> studentList;
+	/*
+	 * @ManyToMany(cascade = CascadeType.ALL)
+	 * 
+	 * @JoinColumn(name = "performance_id") private List<Student> studentList;
+	 */
 	
 	public String getName() {
 		return name;

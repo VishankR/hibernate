@@ -64,8 +64,8 @@ public class Student /* extends Member */ {
 	 * 
 	 * @MapKeyColumn(name = "project_name") private Map<String, String> projects;
 	 */
-	@ManyToMany(cascade = CascadeType.ALL, mappedBy = "studentList")
-	@ElementCollection
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="receiptList")
 	List<FeeReceipt> receiptList;
 
 	public Student(/*
